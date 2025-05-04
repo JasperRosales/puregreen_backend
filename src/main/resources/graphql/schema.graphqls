@@ -1,0 +1,99 @@
+type Query {
+    getAllUsers : [User!]!
+    getUserById(id: Int!): User!
+
+    getAllProgressByUser(id : Int) : [Progress!]!
+
+    getAllQuizzes : [Quiz!]!
+    getQuizById(id: Int!): Quiz!
+
+    getAllQuestions: [Question!]!
+    getQuestionById(id: Int!): Question!
+}
+
+
+type Mutation{
+    createUser(userInput: UserInput): User!
+    login(srcode: String!, password: String!): User!
+
+    deleteUserById(id: Int!): Boolean!
+    updateUser(id: Int!, input: UserInput!): User!
+
+    addProgress(progressInput: ProgressInput, userId: Int!, quizId: Int!): Progress!
+    deleteProgress(id: Int!): Boolean!
+    updateProgress(id: Int!, input: ProgressInput!): Progress!
+
+    createQuiz(quizInput: QuizInput): Quiz!
+    deleteQuizById(id: Int!): Boolean!
+    updateQuiz(id: Int!, input: QuizInput!): Quiz!
+
+    addQuestion(questionInput: QuestionInput, quizId: Int!): Question!
+    updateQuestion(id: Int!, input: QuestionInput!): Question!
+    deleteQuestion(id: Int!, quizId: Int!): Boolean!
+}
+
+
+input UserInput{
+    srcode: String!
+    fullName: String!
+    password: String!
+    role: String!
+    progress: [ProgressInput]
+}
+
+input ProgressInput{
+    user: Int!
+    quiz: Int!
+    status: String
+}
+
+input QuestionInput{
+    title: String
+    option1: String
+    option2: String
+    option3: String
+    option4: String
+    correctOption: String
+    quizId: Int
+}
+
+input QuizInput{
+    title: String
+    category: String
+    questions: [QuestionInput]
+}
+
+
+type User{
+    id: ID!
+    srcode: String!
+    fullName: String!
+    password: String!
+    role: String!
+    progress: [Progress]
+}
+
+type Progress{
+    id: ID!
+    user: User!
+    quiz: Quiz!
+    status: String!
+}
+
+type Quiz{
+    id: ID!
+    title: String!
+    category: String!
+    questions: [Question!]!
+}
+
+type Question{
+    id: ID!
+    question: String!
+    option1: String!
+    option2: String!
+    option3: String!
+    option4: String!
+    correctAnswer: String!
+    quiz: Quiz!
+}
