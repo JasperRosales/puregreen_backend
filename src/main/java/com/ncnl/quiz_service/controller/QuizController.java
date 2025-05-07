@@ -43,6 +43,13 @@ public class QuizController {
         return found;
     }
 
+    @QueryMapping
+    public Quiz getQuizByTitle(@Argument String title){
+        var found = quizRepository.findByTitle(title);
+        log.info("Found quiz {}", title);
+        return found;
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @MutationMapping
     public Quiz createQuiz(@Argument QuizInput quizInput){

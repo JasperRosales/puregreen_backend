@@ -6,6 +6,7 @@ type Query {
 
     getAllQuizzes : [Quiz!]!
     getQuizById(id: Int!): Quiz!
+    getQuizByTitle(title: String): Quiz!
 
     getAllQuestions: [Question!]!
     getQuestionById(id: Int!): Question!
