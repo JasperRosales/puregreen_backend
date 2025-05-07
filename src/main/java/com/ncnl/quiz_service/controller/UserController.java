@@ -53,6 +53,13 @@ public class UserController {
         return userRepository.getReferenceById(id);
     }
 
+    @QueryMapping
+    public User getUserBySrcode(@Argument String srcode){
+        log.info("Finding user by srcode {}", srcode);
+
+        return userRepository.findBySrcode(srcode);
+    }
+
     @MutationMapping
     public User createUser(@Argument UserInput userInput){
         var found = userRepository.findBySrcode(userInput.srcode());

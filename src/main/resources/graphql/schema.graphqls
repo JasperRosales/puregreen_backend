@@ -1,6 +1,7 @@
 type Query {
     getAllUsers : [User!]!
     getUserById(id: Int!): User!
+    getUserBySrcode(srcode: String!): User!
 
     getAllProgressByUser(id : Int) : [Progress!]!
 
@@ -9,6 +10,7 @@ type Query {
     getQuizByTitle(title: String): Quiz!
 
     getAllQuestions: [Question!]!
+    getAllQuestionsByTitle(title: String!): [Question!]!
     getQuestionById(id: Int!): Question!
 }
 
@@ -20,17 +22,17 @@ type Mutation{
     deleteUserById(id: Int!): Boolean!
     updateUser(id: Int!, input: UserInput!): User!
 
-    addProgress(progressInput: ProgressInput, userId: Int!, quizId: Int!): Progress!
+    addProgress(progressInput: ProgressInput, srcode: String!, title: String!): Progress!
     deleteProgress(id: Int!): Boolean!
     updateProgress(id: Int!, input: ProgressInput!): Progress!
 
     createQuiz(quizInput: QuizInput): Quiz!
     deleteQuizById(id: Int!): Boolean!
-    updateQuiz(id: Int!, input: QuizInput!): Quiz!
+    updateQuiz(title: String!, input: QuizInput!): Quiz!
 
-    addQuestion(questionInput: QuestionInput, quizId: Int!): Question!
-    updateQuestion(id: Int!, input: QuestionInput!): Question!
-    deleteQuestion(id: Int!, quizId: Int!): Boolean!
+    addQuestion(questionInput: QuestionInput, title: String!): Question!
+    updateQuestion(question: String!, input: QuestionInput!): Question!
+    deleteQuestion(question: String!, title: String!): Boolean!
 }
 
 

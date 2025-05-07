@@ -13,6 +13,8 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://127.0.0.1:5500");
+        config.addAllowedOrigin("http://127.0.0.1:5501");
+
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setAllowCredentials(true);

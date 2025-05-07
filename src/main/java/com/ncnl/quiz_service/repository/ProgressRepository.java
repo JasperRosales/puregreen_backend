@@ -19,5 +19,6 @@ public interface ProgressRepository extends JpaRepository<Progress, Integer> {
     List<Progress> findProgressWithQuizAndUserByUserId(@Param("userId") Integer userId);
 
     Optional<Progress> findByUserIdAndQuizId(Integer userId, Integer quizId);
+    Optional<Progress> findProgressByUserSrcodeAndQuizTitle(String srcode, String title);
 
 }

@@ -10,6 +10,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
     Arrays findAllByQuizIdIn(List<Integer> quizId);
 
+    Question findByQuestion(String question);
     List<Question> findByQuizIdIn(List<Integer> quizId);
 }
 

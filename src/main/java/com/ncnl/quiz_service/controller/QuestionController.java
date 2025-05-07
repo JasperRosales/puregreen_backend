@@ -38,33 +38,37 @@ public class QuestionController {
         return question;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @MutationMapping
-    public Question updateQuestion(@Argument Integer id, @Argument("input") QuestionInput input) {
-        Question question = questionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Question not found"));
 
-        if (input.title() != null) question.setQuestion(input.title());
-        if (input.option1() != null) question.setOption1(input.option1());
-        if (input.option2() != null) question.setOption2(input.option2());
-        if (input.option3() != null) question.setOption3(input.option3());
-        if (input.option4() != null) question.setOption4(input.option4());
-        if (input.correctOption() != null) question.setCorrectAnswer(input.correctOption());
+    @QueryMapping
+    public List<Question> getAllQuestionsByTitle(@Argument String title){
+
+        return  quizRepository.findByTitle(title).getQuestions();
+    }
+    @MutationMapping
+    public Question updateQuestion(@Argument String question, @Argument("input") QuestionInput input) {
+        Question found = questionRepository.findByQuestion(question);
+                ;
+
+        if (input.title() != null) found.setQuestion(input.title());
+        if (input.option1() != null) found.setOption1(input.option1());
+        if (input.option2() != null) found.setOption2(input.option2());
+        if (input.option3() != null) found.setOption3(input.option3());
+        if (input.option4() != null) found.setOption4(input.option4());
+        if (input.correctOption() != null) found.setCorrectAnswer(input.correctOption());
 
         if (input.quizId() != null) {
             Quiz quiz = quizRepository.findById(input.quizId())
                     .orElseThrow(() -> new RuntimeException("Quiz not found"));
-            question.setQuiz(quiz);
+            found.setQuiz(quiz);
         }
 
-        return questionRepository.save(question);
+        return questionRepository.save(found);
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
     @MutationMapping
-    public Question addQuestion(@Argument QuestionInput questionInput, @Argument Integer quizId){
-        var quiz = quizRepository.findById(quizId);
+    public Question addQuestion(@Argument QuestionInput questionInput, @Argument String title){
+        var quiz = quizRepository.findByTitle(title);
         var question = new Question();
         question.setQuestion(questionInput.title());
         question.setOption1(questionInput.option1());
@@ -72,20 +76,18 @@ public class QuestionController {
         question.setOption3(questionInput.option3());
         question.setOption4(questionInput.option4());
         question.setCorrectAnswer(questionInput.correctOption());
-        question.setQuiz(quiz.orElseThrow());
+        question.setQuiz(quiz);
 
-        log.info(quiz.get().getTitle());
         return questionRepository.save(question);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @MutationMapping
-    public Boolean deleteQuestion(@Argument Integer id, @Argument Integer quizId) {
-        Question question = questionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Question not found"));
+    public Boolean deleteQuestion(@Argument String question, @Argument String title) {
+        Question found = questionRepository.findByQuestion(question);
+        Quiz quiz = quizRepository.findByTitle(title);
 
-        if (question.getQuiz().getId().equals(quizId)) {
-            questionRepository.deleteById(id);
+        if (found.getQuiz().getId().equals(quiz.getId())) {
+            questionRepository.deleteById(found.getId());
             return true;
         }
 

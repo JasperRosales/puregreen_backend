@@ -47,18 +47,16 @@ public class ProgressController {
 
 
     @MutationMapping
-    public Progress addProgress(@Argument ProgressInput progressInput, @Argument Integer userId, @Argument Integer quizId) {
+    public Progress addProgress(@Argument ProgressInput progressInput, @Argument String srcode, @Argument String title) {
 
-        var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+        var user = userRepository.findBySrcode(srcode);
 
-        var quiz = quizRepository.findById(quizId)
-                .orElseThrow(() -> new IllegalArgumentException("Quiz not found with ID: " + quizId));
+        var quiz = quizRepository.findByTitle(title);
 
-        var existingProgress = progressRepository.findByUserIdAndQuizId(userId, quizId);
+        var existingProgress = progressRepository.findProgressByUserSrcodeAndQuizTitle(srcode, title);
 
         if (existingProgress.isPresent()) {
-            log.warn("Progress already exists for userId={} and quizId={}", userId, quizId);
+            log.warn("Progress already exists for userId={} and quizId={}", srcode, title);
             return existingProgress.get();
         }
 
@@ -67,8 +65,7 @@ public class ProgressController {
         progress.setQuiz(quiz);
         progress.setStatus("DONE");
 
-        Progress saved = progressRepository.save(progress);
-        return saved;
+        return progressRepository.save(progress);
     }
 
     @MutationMapping

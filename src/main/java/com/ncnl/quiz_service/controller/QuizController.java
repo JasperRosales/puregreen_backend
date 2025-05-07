@@ -50,7 +50,6 @@ public class QuizController {
         return found;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @MutationMapping
     public Quiz createQuiz(@Argument QuizInput quizInput){
         Quiz existing = quizRepository.findByTitle(quizInput.title());
@@ -68,7 +67,7 @@ public class QuizController {
         return quizRepository.save(quiz);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @MutationMapping
     public Boolean deleteQuizById(@Argument Integer id) {
         Quiz quiz = quizRepository.findById(id)
@@ -79,11 +78,9 @@ public class QuizController {
         return true;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @MutationMapping
-    public Quiz updateQuiz(@Argument Integer id, @Argument QuizInput input){
-        Quiz quiz = quizRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Quiz not found"));
+    public Quiz updateQuiz(@Argument String title, @Argument QuizInput input){
+        Quiz quiz = quizRepository.findByTitle(title);
 
         if (input.title() != null) quiz.setTitle(input.title());
         if (input.category() != null) quiz.setCategory(input.category());
