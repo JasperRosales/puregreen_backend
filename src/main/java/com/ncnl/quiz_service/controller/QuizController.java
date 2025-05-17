@@ -69,9 +69,8 @@ public class QuizController {
 
 
     @MutationMapping
-    public Boolean deleteQuizById(@Argument Integer id) {
-        Quiz quiz = quizRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Quiz not found"));
+    public Boolean deleteQuizByTitle(@Argument String title) {
+        Quiz quiz = quizRepository.findByTitle(title);
 
         quizRepository.delete(quiz);
 

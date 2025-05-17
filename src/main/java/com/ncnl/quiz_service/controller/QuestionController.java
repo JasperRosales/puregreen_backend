@@ -13,6 +13,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -38,7 +39,7 @@ public class QuestionController {
         return question;
     }
 
-
+    
     @QueryMapping
     public List<Question> getAllQuestionsByTitle(@Argument String title){
 
@@ -83,15 +84,29 @@ public class QuestionController {
 
     @MutationMapping
     public Boolean deleteQuestion(@Argument String question, @Argument String title) {
-        Question found = questionRepository.findByQuestion(question);
+
         Quiz quiz = quizRepository.findByTitle(title);
 
-        if (found.getQuiz().getId().equals(quiz.getId())) {
-            questionRepository.deleteById(found.getId());
-            return true;
+        if (quiz == null) {
+            return false;
+        }
+
+        List<Question> questions = questionRepository.findByQuiz(quiz);
+
+        if (questions.isEmpty()) {
+            return false;
+        }
+
+        for (Question found : questions) {
+            if (found.getQuestion().equals(question)) {
+                questionRepository.deleteById(found.getId());
+                return true;
+            }
         }
 
         return false;
     }
+
+
 
 }

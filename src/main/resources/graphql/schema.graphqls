@@ -27,7 +27,7 @@ type Mutation{
     updateProgress(id: Int!, input: ProgressInput!): Progress!
 
     createQuiz(quizInput: QuizInput): Quiz!
-    deleteQuizById(id: Int!): Boolean!
+    deleteQuizByTitle(title: String!): Boolean!
     updateQuiz(title: String!, input: QuizInput!): Quiz!
 
     addQuestion(questionInput: QuestionInput, title: String!): Question!
