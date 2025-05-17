@@ -3,7 +3,7 @@ type Query {
     getUserById(id: Int!): User!
     getUserBySrcode(srcode: String!): User!
 
-    getAllProgressByUser(id : Int) : [Progress!]!
+    getAllProgressByUser(srcode: String!) : [Progress!]!
 
     getAllQuizzes : [Quiz!]!
     getQuizById(id: Int!): Quiz!
@@ -12,6 +12,8 @@ type Query {
     getAllQuestions: [Question!]!
     getAllQuestionsByTitle(title: String!): [Question!]!
     getQuestionById(id: Int!): Question!
+
+    getAllMessage: [AdminInbox!]!
 }
 
 
@@ -33,6 +35,9 @@ type Mutation{
     addQuestion(questionInput: QuestionInput, title: String!): Question!
     updateQuestion(question: String!, input: QuestionInput!): Question!
     deleteQuestion(question: String!, title: String!): Boolean!
+
+    addMessage(input: AdminInboxInput): AdminInbox!
+    deleteMessage(subject: String!): Boolean!
 }
 
 
@@ -64,6 +69,21 @@ input QuizInput{
     title: String
     category: String
     questions: [QuestionInput]
+}
+
+input AdminInboxInput{
+    reciever: String,
+    sender: String,
+    subject: String,
+    content: String
+}
+
+type AdminInbox{
+    id: ID!
+    reciever: String!
+    sender: String!
+    subject: String!
+    content: String!
 }
 
 

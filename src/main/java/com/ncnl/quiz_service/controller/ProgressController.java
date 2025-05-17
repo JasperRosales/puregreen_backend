@@ -34,9 +34,11 @@ public class ProgressController {
     @Autowired
     private QuizRepository quizRepository;
 
+
     @QueryMapping
-    public List<Progress> getAllProgressByUser(@Argument Integer id){
-        List<Progress> progress = progressRepository.findProgressWithQuizAndUserByUserId(id);
+    public List<Progress> getAllProgressByUser(@Argument String srcode){
+        User user = userRepository.findBySrcode(srcode);
+        List<Progress> progress = progressRepository.findProgressWithQuizAndUserByUserId(user.getId());
 
         if (progress.isEmpty()) {
             throw new RuntimeException("No progress for user");

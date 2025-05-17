@@ -1,6 +1,6 @@
 
 
-CREATE TABLE user (
+CREATE TABLE IF NOT EXISTS user (
     id INT AUTO_INCREMENT PRIMARY KEY,
     srcode VARCHAR(100),
     full_name VARCHAR(255),
@@ -9,7 +9,7 @@ CREATE TABLE user (
     created DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE progress (
+CREATE TABLE IF NOT EXISTS progress  (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     quiz_id INT,
@@ -38,3 +38,13 @@ CREATE TABLE IF NOT EXISTS question (
     FOREIGN KEY (quiz_id) REFERENCES quiz(id) ON DELETE CASCADE,
     INDEX idx_quiz_id (quiz_id)
 );
+
+CREATE TABLE IF NOT EXISTS admin_inbox(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reciever varchar(255) not null,
+    sender varchar(255) not null,
+    subject varchar(255) not null,
+    content TEXT not null,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
